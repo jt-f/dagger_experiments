@@ -1,7 +1,7 @@
 # Dagger Experiments
 
 Joe's experiments with Dagger!
-
+(...with a little boilerplate help from Perplexity)
 ## Overview
 
 Dagger pipelines that demonstrate different use cases and workflows.
