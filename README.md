@@ -23,14 +23,29 @@ dagger develop
 Set your API key as an environment variable.
 copy from example:
 ```bash
-cp env.example .env
-# Then edit .env and add your API key
+cp .env.example .env
 ```
+Then edit .env and add your API key (can be GEMINI or OPENAI too)
 
 Test it is working:
 ```bash
 dagger -c "llm | model"
 ```
+The output should be something like:
+
+```bash
+▶ connect 0.7s
+▶ detect module: . 1.3s
+▶ load module: /mnt/c/Users/joefo/test/dagger_experiments 8.5s
+
+▶ Missing.model: String! 0.1s
+
+claude-3-5-sonnet-latest
+
+Setup tracing at https://dagger.cloud/traces/setup. To hide set DAGGER_NO_NAG=1
+```
+
+
 
 ## Available Pipelines
 
@@ -50,6 +65,8 @@ You can modify:
 - `DEFAULT_GO_GENERATION_PROMPT`: How the LLM generates Go code
 - `DEFAULT_INTERACTION_PROMPT`: How the LLM interacts with the generated program
 
+You can also modify other prompts in the main.py file, such as the final report format.
+
 #### run the pipeline
 
 Start the shell
@@ -62,6 +79,77 @@ Run the pipeline
 ```bash
 # Customise the instruction however you want
 complete-pipeline "make a guessing game with user interaction" 
+```
+⚠️ You might need to run a few times with different assignments to get a good output :)
+
+### Expected output
+
+The output should be something like:
+
+```bash
+=== DAGGER.IO LLM PIPELINE EXECUTION REPORT ===                                                                                                                  
+                                                                                                                                                                 
+Assignment Given: make a guessing game with user interaction                                                                                                     
+                                                                                                                                                                 
+Step 1: Code Generation Completed ✅                                                                                                                              
+- LLM successfully generated Go program                                                                                                                          
+- Program built and validated in container                                                                                                                       
+                                                                                                                                                                 
+Step 2: Interactive Testing Completed ✅                                                                                                                          
+- Second LLM agent tested the program                                                                                                                            
+- Full interaction documented below                                                                                                                              
+                                                                                                                                                                 
+=== INTERACTION LOG ===                                                                                                                                          
+Program Testing Session Log                                                                                                                                      
+                                                                                                                                                                 
+Initial Exploration:                                                                                                                                             
+1. Examined the program structure in /app directory:                                                                                                             
+   - Found main.go, go.mod, and game directory                                                                                                                   
+2. Reviewed main.go source code:                                                                                                                                 
+   - Confirmed it's a number guessing game                                                                                                                       
+   - Number range: 1-100                                                                                                                                         
+   - Maximum attempts: 10                                                                                                                                        
+   - Provides feedback (too high/too low)                                                                                                                        
+                                                                                                                                                                 
+Building:                                                                                                                                                        
+1. Attempted to run ./game (failed - not built)                                                                                                                  
+2. Successfully built program with: go build -o game                                                                                                             
+                                                                                                                                                                 
+Game Testing Session:                                                                                                                                            
+1. Game started with welcome message and instructions                                                                                                            
+2. My guessing strategy:                                                                                                                                         
+   - Started with 50 (middle of range)                                                                                                                           
+   - Got "Too high" -> number is < 50                                                                                                                            
+   - Tried 75 -> "Too high"                                                                                                                                      
+   - Tried 63 -> "Too high"                                                                                                                                      
+   - Tried 57 -> "Too high"                                                                                                                                      
+   - Tried 53 -> "Too high"                                                                                                                                      
+   - Tried 51 -> "Too high"                                                                                                                                      
+   - Tried 52 -> "Too high"                                                                                                                                      
+                                                                                                                                                                 
+Program Behavior Analysis:                                                                                                                                       
+1. Core functionality:                                                                                                                                           
+   - Random number generation works                                                                                                                              
+   - Input processing works correctly                                                                                                                            
+   - Feedback system works (too high/too low responses)                                                                                                          
+   - Attempt counting works                                                                                                                                      
+   - Clear user interface with good instructions                                                                                                                 
+                                                                                                                                                                 
+2. User Experience:                                                                                                                                              
+   - Clear welcome message                                                                                                                                       
+   - Good feedback after each guess                                                                                                                              
+   - Shows attempt count clearly                                                                                                                                 
+   - Maintains good spacing for readability                                                                                                                      
+                                                                                                                                                                 
+3. Input Handling:                                                                                                                                               
+   - Accepts numeric input correctly                                                                                                                             
+   - Properly processes each guess                                                                                                                               
+   - Program responds appropriately to input                                                                                                                     
+                                                                                                                                                                 
+The program functions as intended, providing an engaging number guessing game experience with clear feedback and proper game mechanics.                          
+                                                                                                                                                                 
+=== PIPELINE COMPLETED SUCCESSFULLY ===   
+
 ```
 
 ### Default Prompts
