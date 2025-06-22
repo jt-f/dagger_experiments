@@ -16,7 +16,7 @@ Dagger pipelines that demonstrate different use cases and workflows.
 ### Initialize Dagger
 
 ```bash
-dagger init
+dagger develop
 ```
 
 ### Configure your environment
