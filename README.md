@@ -27,7 +27,7 @@ cp env.example .env
 # Then edit .env and add your API key
 ```
 
-Test it's working:
+Test it is working:
 ```bash
 dagger -c "llm | model"
 ```
